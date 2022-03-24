@@ -1,4 +1,4 @@
-module dotenv
+module github.com/go-zoox/dotenv
 
 go 1.17
 
