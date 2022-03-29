@@ -8,6 +8,8 @@ import (
 	"strings"
 )
 
+const defaultTagName = "env"
+
 // DataSource defines the interface for loading data from a data source.
 type DataSource interface {
 	Get(key string) string
@@ -27,7 +29,7 @@ func decodeWithTagFromDataSource(ptr interface{}, tagName string, dataSource Dat
 			return err
 		}
 
-		if err := setValue(typ.Type, val, tagValue, attribute.Name); err != nil {
+		if err := setValue(dataSource, typ.Type, val, tagValue, attribute.Name); err != nil {
 			return err
 		}
 	}
@@ -71,7 +73,9 @@ func newAttribute(tag reflect.StructTag, tagName string, attributeName string) *
 	}
 }
 
-func setValue(t reflect.Type, v reflect.Value, Value string, Name string) error {
+func setValue(dataSource DataSource, t reflect.Type, v reflect.Value, Value string, Name string) error {
+	// fmt.Printf("%s: %s\n", Name, v.Kind())
+
 	switch v.Kind() {
 	case reflect.String:
 		v.SetString(Value)
@@ -107,6 +111,11 @@ func setValue(t reflect.Type, v reflect.Value, Value string, Name string) error 
 		}
 		v.SetFloat(vv)
 
+	case reflect.Struct:
+		if err := decodeWithTagFromDataSource(v.Addr().Interface(), defaultTagName, dataSource); err != nil {
+			return fmt.Errorf("%s is not struct(%s)", Name, err.Error())
+		}
+
 	default:
 		return fmt.Errorf("%s is not supported", Name)
 	}
@@ -116,7 +125,7 @@ func setValue(t reflect.Type, v reflect.Value, Value string, Name string) error 
 
 // Decode decodes the given struct pointer from the environment.
 func Decode(ptr interface{}) error {
-	return decodeWithTagFromDataSource(ptr, "env", &EnvDataSource{})
+	return decodeWithTagFromDataSource(ptr, defaultTagName, &EnvDataSource{})
 }
 
 // EnvDataSource is a data source that loads data from the environment.
