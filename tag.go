@@ -66,14 +66,14 @@ func decodeWithTagFromDataSource(ptr interface{}, tagName string, dataSource Dat
 
 // Decode decodes the given struct pointer from the environment.
 func Decode(ptr interface{}) error {
-	return decodeWithTagFromDataSource(ptr, "env", &Env{})
+	return decodeWithTagFromDataSource(ptr, "env", &EnvDataSource{})
 }
 
-// Env is a data source that loads data from the environment.
-type Env struct {
+// EnvDataSource is a data source that loads data from the environment.
+type EnvDataSource struct {
 }
 
 // Get returns the value of the given key.
-func (Env) Get(key string) string {
+func (EnvDataSource) Get(key string) string {
 	return os.Getenv(key)
 }
