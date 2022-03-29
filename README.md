@@ -4,7 +4,7 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/go-zoox/dotenv)](https://goreportcard.com/report/github.com/go-zoox/dotenv)
 [![Coverage Status](https://coveralls.io/repos/github/go-zoox/dotenv/badge.svg?branch=master)](https://coveralls.io/github/go-zoox/dotenv?branch=master)
 [![GitHub issues](https://img.shields.io/github/issues/go-zoox/dotenv.svg)](https://github.com/go-zoox/dotenv/issues)
-[![Release](https://img.shields.io/github/release/go-zoox/dotenv.svg?label=Release)](https://github.com/go-zoox/dotenv/releases)
+[![Release](https://img.shields.io/github/tag/go-zoox/dotenv.svg?label=Release)](https://github.com/go-zoox/dotenv/releases)
 
 Load application environment variables from a `.env` file into the current process.
 
