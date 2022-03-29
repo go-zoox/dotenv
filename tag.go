@@ -5,6 +5,7 @@ import (
 	"os"
 	"reflect"
 	"strconv"
+	"strings"
 )
 
 // DataSource defines the interface for loading data from a data source.
@@ -20,7 +21,7 @@ func decodeWithTagFromDataSource(ptr interface{}, tagName string, dataSource Dat
 		typ := t.Field(i)
 		val := v.Field(i)
 
-		attribute := newAttribute(typ.Tag, tagName)
+		attribute := newAttribute(typ.Tag, tagName, typ.Name)
 		tagValue, err := attribute.Value(dataSource.Get(attribute.Name))
 		if err != nil {
 			return err
@@ -54,10 +55,14 @@ func (a *attribute) Value(current string) (string, error) {
 	return current, nil
 }
 
-func newAttribute(tag reflect.StructTag, tagName string) *attribute {
+func newAttribute(tag reflect.StructTag, tagName string, attributeName string) *attribute {
 	tagValueName := tag.Get(tagName)
 	tabValueDfeault := tag.Get("default")
 	tagValueRequired := tag.Get("required")
+
+	if tagValueName == "" {
+		tagValueName = strings.ToUpper(attributeName)
+	}
 
 	return &attribute{
 		Name:     tagValueName,
