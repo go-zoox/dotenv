@@ -20,45 +20,90 @@ func decodeWithTagFromDataSource(ptr interface{}, tagName string, dataSource Dat
 		typ := t.Field(i)
 		val := v.Field(i)
 
-		kind := val.Kind()
-
-		tagValueName := typ.Tag.Get(tagName)
-		tabValueDfeault := typ.Tag.Get("default")
-		tagValueRequired := typ.Tag.Get("required")
-		tagValue := dataSource.Get(tagValueName)
-		if tagValue == "" {
-			tagValue = tabValueDfeault
+		attribute := newAttribute(typ.Tag, tagName)
+		tagValue, err := attribute.Value(dataSource.Get(attribute.Name))
+		if err != nil {
+			return err
 		}
 
-		if tagValueRequired == "true" && tagValue == "" {
-			return fmt.Errorf("%s is required", tagValueName)
+		if err := setValue(typ.Type, val, tagValue, attribute.Name); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+type attribute struct {
+	Name     string
+	Required bool
+	Default  string
+}
+
+func (a *attribute) Value(current string) (string, error) {
+	if current == "" {
+		if a.Default != "" {
+			return a.Default, nil
 		}
 
-		switch kind {
-		case reflect.String:
-			val.SetString(tagValue)
-		case reflect.Bool:
-			switch tagValue {
-			case "true", "True", "TRUE":
-				val.SetBool(true)
-			case "false", "False", "FALSE":
-				val.SetBool(false)
-			default:
-				return fmt.Errorf("%s is not bool", tagValueName)
-			}
-		case reflect.Int, reflect.Int64:
-			v, err := strconv.ParseInt(tagValue, 10, 64)
-			if err != nil {
-				return fmt.Errorf("%s is not int", tagValueName)
-			}
-			val.SetInt(v)
-		case reflect.Float64:
-			v, err := strconv.ParseFloat(tagValue, 64)
-			if err != nil {
-				return fmt.Errorf("%s is not float", tagValueName)
-			}
-			val.SetFloat(v)
+		if a.Required {
+			return "", fmt.Errorf("%s is required", a.Name)
 		}
+	}
+
+	return current, nil
+}
+
+func newAttribute(tag reflect.StructTag, tagName string) *attribute {
+	tagValueName := tag.Get(tagName)
+	tabValueDfeault := tag.Get("default")
+	tagValueRequired := tag.Get("required")
+
+	return &attribute{
+		Name:     tagValueName,
+		Required: tagValueRequired == "true",
+		Default:  tabValueDfeault,
+	}
+}
+
+func setValue(t reflect.Type, v reflect.Value, Value string, Name string) error {
+	switch v.Kind() {
+	case reflect.String:
+		v.SetString(Value)
+
+	case reflect.Bool:
+		switch Value {
+		case "true", "True", "TRUE":
+			v.SetBool(true)
+		case "false", "False", "FALSE":
+			v.SetBool(false)
+		default:
+			return fmt.Errorf("%s is not bool", Name)
+		}
+
+	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
+		vv, err := strconv.ParseInt(Value, 10, 64)
+		if err != nil {
+			return fmt.Errorf("%s is not int64", Name)
+		}
+		v.SetInt(vv)
+
+	case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64:
+		vv, err := strconv.ParseUint(Value, 10, 64)
+		if err != nil {
+			return fmt.Errorf("%s is not int64", Name)
+		}
+		v.SetUint(vv)
+
+	case reflect.Float32, reflect.Float64:
+		vv, err := strconv.ParseFloat(Value, 64)
+		if err != nil {
+			return fmt.Errorf("%s is not float", Name)
+		}
+		v.SetFloat(vv)
+
+	default:
+		return fmt.Errorf("%s is not supported", Name)
 	}
 
 	return nil
