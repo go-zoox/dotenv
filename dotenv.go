@@ -6,8 +6,16 @@ import (
 	"github.com/joho/godotenv"
 )
 
-func Load(filenames ...string) error {
-	return godotenv.Load(filenames...)
+func Load(value interface{}, filenames ...string) error {
+	if err := godotenv.Load(filenames...); err != nil {
+		return err
+	}
+
+	if err := Decode(value); err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func Get(key string, defaultValue ...string) string {
