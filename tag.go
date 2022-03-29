@@ -7,6 +7,7 @@ import (
 	"strconv"
 )
 
+// DataSource defines the interface for loading data from a data source.
 type DataSource interface {
 	Get(key string) string
 }
@@ -16,14 +17,14 @@ func decodeWithTagFromDataSource(ptr interface{}, tagName string, dataSource Dat
 	v := reflect.ValueOf(ptr).Elem()
 
 	for i := 0; i < t.NumField(); i++ {
-		type_ := t.Field(i)
-		value_ := v.Field(i)
+		typ := t.Field(i)
+		val := v.Field(i)
 
-		kind := value_.Kind()
+		kind := val.Kind()
 
-		tagValueName := type_.Tag.Get(tagName)
-		tabValueDfeault := type_.Tag.Get("default")
-		tagValueRequired := type_.Tag.Get("required")
+		tagValueName := typ.Tag.Get(tagName)
+		tabValueDfeault := typ.Tag.Get("default")
+		tagValueRequired := typ.Tag.Get("required")
 		tagValue := dataSource.Get(tagValueName)
 		if tagValue == "" {
 			tagValue = tabValueDfeault
@@ -35,13 +36,13 @@ func decodeWithTagFromDataSource(ptr interface{}, tagName string, dataSource Dat
 
 		switch kind {
 		case reflect.String:
-			value_.SetString(tagValue)
+			val.SetString(tagValue)
 		case reflect.Bool:
 			switch tagValue {
 			case "true", "True", "TRUE":
-				value_.SetBool(true)
+				val.SetBool(true)
 			case "false", "False", "FALSE":
-				value_.SetBool(false)
+				val.SetBool(false)
 			default:
 				return fmt.Errorf("%s is not bool", tagValueName)
 			}
@@ -50,26 +51,29 @@ func decodeWithTagFromDataSource(ptr interface{}, tagName string, dataSource Dat
 			if err != nil {
 				return fmt.Errorf("%s is not int", tagValueName)
 			}
-			value_.SetInt(v)
+			val.SetInt(v)
 		case reflect.Float64:
 			v, err := strconv.ParseFloat(tagValue, 64)
 			if err != nil {
 				return fmt.Errorf("%s is not float", tagValueName)
 			}
-			value_.SetFloat(v)
+			val.SetFloat(v)
 		}
 	}
 
 	return nil
 }
 
+// Decode decodes the given struct pointer from the environment.
 func Decode(ptr interface{}) error {
 	return decodeWithTagFromDataSource(ptr, "env", &Env{})
 }
 
+// Env is a data source that loads data from the environment.
 type Env struct {
 }
 
+// Get returns the value of the given key.
 func (Env) Get(key string) string {
 	return os.Getenv(key)
 }

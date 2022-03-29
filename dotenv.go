@@ -6,6 +6,7 @@ import (
 	"github.com/joho/godotenv"
 )
 
+// Load loads the .env file into the environment.
 func Load(value interface{}, filenames ...string) error {
 	if err := godotenv.Load(filenames...); err != nil {
 		return err
@@ -18,6 +19,7 @@ func Load(value interface{}, filenames ...string) error {
 	return nil
 }
 
+// Get gets the value of the given key from system environment.
 func Get(key string, defaultValue ...string) string {
 	if len(defaultValue) > 1 {
 		panic("Too many arguments supplied")
