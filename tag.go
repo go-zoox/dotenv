@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"reflect"
+	"regexp"
 	"strconv"
 	"strings"
 )
@@ -24,7 +25,19 @@ func decodeWithTagFromDataSource(ptr interface{}, tagName string, dataSource Dat
 		val := v.Field(i)
 
 		attribute := newAttribute(typ.Tag, tagName, typ.Name)
-		tagValue, err := attribute.Value(dataSource.Get(attribute.Name))
+		attributeValue := dataSource.Get(attribute.Name)
+		if attributeValue == "" {
+			// compitable with snake case
+			//	for example:
+			//    type Config struct {
+			//      SecretId string
+			//		}
+			//
+			//  it will check env SECRETID and SECRET_ID (snake case)
+			attributeValue = dataSource.Get(attribute.NameInSnakeCase)
+		}
+		tagValue, err := attribute.Value(attributeValue)
+
 		if err != nil {
 			return err
 		}
@@ -37,10 +50,16 @@ func decodeWithTagFromDataSource(ptr interface{}, tagName string, dataSource Dat
 	return nil
 }
 
+// func getAttributeValue() string {
+
+// }
+
 type attribute struct {
 	Name     string
 	Required bool
 	Default  string
+	//
+	NameInSnakeCase string
 }
 
 func (a *attribute) Value(current string) (string, error) {
@@ -61,15 +80,19 @@ func newAttribute(tag reflect.StructTag, tagName string, attributeName string) *
 	tagValueName := tag.Get(tagName)
 	tabValueDfeault := tag.Get("default")
 	tagValueRequired := tag.Get("required")
+	//
+	tagValueNameInSnakeCase := ""
 
 	if tagValueName == "" {
 		tagValueName = strings.ToUpper(attributeName)
+		tagValueNameInSnakeCase = strings.ToUpper(toSnakeCase(attributeName))
 	}
 
 	return &attribute{
-		Name:     tagValueName,
-		Required: tagValueRequired == "true",
-		Default:  tabValueDfeault,
+		Name:            tagValueName,
+		NameInSnakeCase: tagValueNameInSnakeCase,
+		Required:        tagValueRequired == "true",
+		Default:         tabValueDfeault,
 	}
 }
 
@@ -135,4 +158,14 @@ type EnvDataSource struct {
 // Get returns the value of the given key.
 func (EnvDataSource) Get(key string) string {
 	return os.Getenv(key)
+}
+
+// utils
+var matchFirstCap = regexp.MustCompile("(.)([A-Z][a-z]+)")
+var matchAllCap = regexp.MustCompile("([a-z0-9])([A-Z])")
+
+func toSnakeCase(str string) string {
+	snake := matchFirstCap.ReplaceAllString(str, "${1}_${2}")
+	snake = matchAllCap.ReplaceAllString(snake, "${1}_${2}")
+	return snake
 }
