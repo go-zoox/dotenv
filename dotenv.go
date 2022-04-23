@@ -3,6 +3,7 @@ package dotenv
 import (
 	"os"
 
+	"github.com/go-zoox/tag"
 	"github.com/joho/godotenv"
 )
 
@@ -12,7 +13,8 @@ func Load(value interface{}, filenames ...string) error {
 		return err
 	}
 
-	if err := Decode(value); err != nil {
+	tg := tag.New("env", &EnvDataSource{})
+	if err := tg.Decode(value); err != nil {
 		return err
 	}
 
