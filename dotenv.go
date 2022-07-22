@@ -9,7 +9,7 @@ import (
 
 // Load loads the .env file into the environment.
 func Load(value interface{}, filenames ...string) error {
-	if err := godotenv.Load(filenames...); err != nil {
+	if err := LoadToEnv(filenames...); err != nil {
 		return err
 	}
 
@@ -19,6 +19,11 @@ func Load(value interface{}, filenames ...string) error {
 	}
 
 	return nil
+}
+
+// LoadToEnv loads the .env file into environment.
+func LoadToEnv(filenames ...string) error {
+	return godotenv.Load(filenames...)
 }
 
 // Get gets the value of the given key from system environment.
