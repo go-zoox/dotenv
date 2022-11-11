@@ -3,9 +3,16 @@ package dotenv
 import (
 	"os"
 
+	"github.com/go-zoox/fs"
 	"github.com/go-zoox/tag"
 	"github.com/joho/godotenv"
 )
+
+func init() {
+	if fs.IsExist(fs.JoinPath(fs.CurrentDir(), ".env")) {
+		LoadToEnv()
+	}
+}
 
 // Load loads the .env file into the environment.
 func Load(value interface{}, filenames ...string) error {

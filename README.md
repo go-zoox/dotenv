@@ -9,6 +9,11 @@
 Load application environment variables from a `.env` file into the current process.
 
 ```go
+// Usage 1: Type Safe Env Config
+import (
+  dotenv "github.com/go-zoox/dotenv"
+)
+
 type Config struct {
   Host string `env:"HOST" default:"0.0.0.0"`
   Port int    `env:"PORT" default:"8080"`
@@ -20,6 +25,17 @@ var config Config
 if err := dotenv.Load(&config); err != nil {
   panic(err)
 }
+```
+
+```go
+// Usage 2: Auto Load .env To OS
+import (
+  "os"
+  
+  _ "github.com/go-zoox/dotenv"
+)
+
+fmt.Println("env:", os.Get("FROM_DOT_ENV"))
 ```
 
 ## Inspired by
