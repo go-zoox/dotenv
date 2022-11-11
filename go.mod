@@ -1,6 +1,6 @@
 module github.com/go-zoox/dotenv
 
-go 1.17
+go 1.18
 
 require (
 	github.com/go-zoox/fs v1.3.0
