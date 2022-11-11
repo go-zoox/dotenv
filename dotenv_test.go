@@ -14,7 +14,7 @@ func TestDotEnv(t *testing.T) {
 	type Env struct {
 		User    string `env:"USER,required"`
 		HomeDir string `env:"HOME,required"`
-		Age     int    `env:"AGE,default=100"`
+		Age     int64  `env:"AGE,default=100"`
 
 		// Database struct {
 		// 	Host string `env:"DB_HOST" default:"127.0.0.1"`
