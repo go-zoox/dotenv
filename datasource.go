@@ -9,8 +9,8 @@ type EnvDataSource struct {
 }
 
 // Get returns the value of the given key.
-func (EnvDataSource) Get(key string) (interface{}, error) {
-	return os.Getenv(key), nil
+func (EnvDataSource) Get(key string) any {
+	return os.Getenv(key)
 }
 
 // // utils

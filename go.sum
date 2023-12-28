@@ -1,12 +1,12 @@
 github.com/frankban/quicktest v1.14.3 h1:FJKSZTDHjyhriyC81FLQ0LY93eSai0ZyR/ZIkd3ZUKE=
 github.com/fsnotify/fsnotify v1.5.4 h1:jRbGcIw6P2Meqdwuo0H1p6JVLbL5DHKAKlYndzMwVZI=
 github.com/fsnotify/fsnotify v1.5.4/go.mod h1:OVB6XrOHzAwXMpEM7uPOzcehqUV2UqJxmVXmkdnm1bU=
-github.com/go-zoox/core-utils v1.3.4 h1:qfapS7+tNWIz0TDyAICfdeIL2QLS1iJ8+mZWq4NInbE=
-github.com/go-zoox/core-utils v1.3.4/go.mod h1:raOOwr2l2sJQyjR0Dg33sg0ry4U1/L2eNTuLFRpUXWs=
+github.com/go-zoox/core-utils v1.3.5 h1:uxnPjUdo20ZCYCJp+1deuoqdMByTTJxQFrMp8e5ty+E=
+github.com/go-zoox/core-utils v1.3.5/go.mod h1:raOOwr2l2sJQyjR0Dg33sg0ry4U1/L2eNTuLFRpUXWs=
 github.com/go-zoox/fs v1.3.0 h1:ATMubmupuEEaXkGP2ku2wZLUtwQuySN7UvHK6UCpVQ8=
 github.com/go-zoox/fs v1.3.0/go.mod h1:sgsPVM/A1IAmUAhO/yyCAAKnkV6qSxToAj5G1gh4Tq8=
-github.com/go-zoox/tag v1.2.5 h1:6GVcCW+DUvyGAsEoJgD0czS8iFdVioN8N+T2jJ1LBfU=
-github.com/go-zoox/tag v1.2.5/go.mod h1:aDQeZdKcmu6DTkxgJoXXVFSERKXUBCgtTkPER71t+D8=
+github.com/go-zoox/tag v1.2.6 h1:TtqqB45XWupwHasEA+O+lhMsFbKOpXscebdd/CtPsPY=
+github.com/go-zoox/tag v1.2.6/go.mod h1:r8rpj8j4cFe2d79oXjbEVgy9bVAWUvvgRblYo8tyhig=
 github.com/go-zoox/testify v1.0.2 h1:G5sQ3xm0uwCuytnMhgnqZ5BItCt2DN3n2wLBqlIJEWA=
 github.com/go-zoox/uuid v0.0.1 h1:txqmDavRTq68gzzqWfJQLorFyUp9a7M2lmq2KcwPGPA=
 github.com/go-zoox/uuid v0.0.1/go.mod h1:0/F4LdfLqFdyqOf7aXoiYXRkXHU324JQ5DZEytXYBPM=
