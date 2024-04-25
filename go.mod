@@ -4,7 +4,7 @@ go 1.18
 
 require (
 	github.com/go-zoox/fs v1.3.0
-	github.com/go-zoox/tag v1.3.1
+	github.com/go-zoox/tag v1.3.2
 	github.com/joho/godotenv v1.4.0
 )
 

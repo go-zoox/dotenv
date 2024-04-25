@@ -5,8 +5,8 @@ github.com/go-zoox/core-utils v1.4.7 h1:CXVeGNF8l0V68mE9XU4qWHB4WqEx+mTDfWJ0kWiI
 github.com/go-zoox/core-utils v1.4.7/go.mod h1:raOOwr2l2sJQyjR0Dg33sg0ry4U1/L2eNTuLFRpUXWs=
 github.com/go-zoox/fs v1.3.0 h1:ATMubmupuEEaXkGP2ku2wZLUtwQuySN7UvHK6UCpVQ8=
 github.com/go-zoox/fs v1.3.0/go.mod h1:sgsPVM/A1IAmUAhO/yyCAAKnkV6qSxToAj5G1gh4Tq8=
-github.com/go-zoox/tag v1.3.1 h1:YUJJDippa4R+/MBqzeuSPwzNX2nxFhQafaGcdi48DlA=
-github.com/go-zoox/tag v1.3.1/go.mod h1:I0ZCDrMDK6muFrHFNb6Tw5hKQ7ivaXAnMcKAVpRfCwI=
+github.com/go-zoox/tag v1.3.2 h1:ayoHG/Hm3ts7ztsV/oiwmc8ZrtweYsEI/QQdTxRqqD0=
+github.com/go-zoox/tag v1.3.2/go.mod h1:I0ZCDrMDK6muFrHFNb6Tw5hKQ7ivaXAnMcKAVpRfCwI=
 github.com/go-zoox/testify v1.0.2 h1:G5sQ3xm0uwCuytnMhgnqZ5BItCt2DN3n2wLBqlIJEWA=
 github.com/go-zoox/uuid v0.0.1 h1:txqmDavRTq68gzzqWfJQLorFyUp9a7M2lmq2KcwPGPA=
 github.com/go-zoox/uuid v0.0.1/go.mod h1:0/F4LdfLqFdyqOf7aXoiYXRkXHU324JQ5DZEytXYBPM=
