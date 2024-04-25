@@ -1,4 +1,4 @@
 package dotenv
 
 // Version is the current version of the package.
-var Version = "1.2.6"
+var Version = "1.3.0"
